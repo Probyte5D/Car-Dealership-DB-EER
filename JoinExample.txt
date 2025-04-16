@@ -42,9 +42,7 @@ INNER JOIN venditori ON veicoli.venditore_ID = venditori.venditore_ID;
 Utilizziamo l'INNER JOIN per includere solo le vendite in cui tutte le informazioni (veicolo, modello, marca, cliente, venditore) sono presenti, garantendo così l'integrità dei dati per l'analisi.
 
 2. LEFT JOIN: Identificazione dei veicoli non ancora venduti
-Questa query elenca tutti i veicoli presenti in magazzino, evidenziando quali di essi non sono ancora stati venduti (i campi della vendita saranno NULL per i veicoli non venduti).
-
-
+Questa query elenca tutti i veicoli presenti in magazzino, evidenziando quali di essi non sono ancora stati venduti (i campi della vendita saranno NULL per i veicoli non venduti)
 -- Obiettivo: Visualizzare l'intero parco veicoli, evidenziando quelli non ancora venduti,
 -- per identificare possibili stock da promuovere o analizzare l'efficienza di vendita.
 SELECT 
