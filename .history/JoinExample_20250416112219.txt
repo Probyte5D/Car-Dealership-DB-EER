@@ -1,0 +1,86 @@
+Utilizzare query con join permette di ottenere tutte le informazioni necessarie in un'unica operazione. Questo approccio Garantisce l'integrità dei dati: Con join ben strutturate, si escludono record incompleti e si lavora solo con dati affidabili.
+
+Migliora l'efficienza: Invece di eseguire più query separate, una singola query con join multiple permette di ottenere tutte le informazioni necessarie in una volta sola.
+
+Facilita l'analisi e la reportistica: Avere una vista completa dei dati in un unico risultato semplifica l'interpretazione dei dati e il processo decisionale.
+
+1. INNER JOIN: Analisi delle vendite complete
+Questa query è pensata per ottenere una panoramica completa delle vendite, includendo solo quei record per cui sono presenti tutte le informazioni necessarie (veicolo, modello, marca, cliente e venditore).
+
+
+-- Obiettivo: Analizzare le vendite registrate dove tutte le informazioni correlate sono presenti,
+-- per avere dati affidabili su performance, prodotti e profili dei clienti e venditori.
+SELECT 
+    vendite.vendita_ID, 
+    vendite.data_vendita,
+    vendite.prezzo_vendita,
+    -- Informazioni del veicolo venduto
+    veicoli.veicolo_ID,
+    veicoli.anno_immatricolazione,
+    -- Dettagli sul modello e marca
+    modelli.modello,
+    marche.marca,
+    -- Dati del cliente che ha acquistato
+    clienti.cliente_ID,
+    clienti.nome AS cliente_nome, 
+    clienti.cognome AS cliente_cognome,
+    -- Dati del venditore che ha effettuato la vendita
+    venditori.venditore_ID,
+    venditori.nome AS venditore_nome,
+    venditori.cognome AS venditore_cognome
+FROM vendite
+-- Unisce le vendite con il veicolo corrispondente
+INNER JOIN veicoli ON vendite.veicolo_ID = veicoli.veicolo_ID
+-- Unisce il veicolo con il modello per avere informazioni specifiche
+INNER JOIN modelli ON veicoli.modello_ID = modelli.modello_ID
+-- Unisce il modello con la marca per identificare il brand
+INNER JOIN marche ON modelli.marca_ID = marche.marca_ID
+-- Unisce la vendita con il cliente che ha effettuato l'acquisto
+INNER JOIN clienti ON vendite.cliente_ID = clienti.cliente_ID
+-- Unisce il veicolo con il venditore responsabile della vendita
+INNER JOIN venditori ON veicoli.venditore_ID = venditori.venditore_ID;
+Utilizziamo l'INNER JOIN per includere solo le vendite in cui tutte le informazioni (veicolo, modello, marca, cliente, venditore) sono presenti, garantendo così l'integrità dei dati per l'analisi.
+
+2. LEFT JOIN: Identificazione dei veicoli non ancora venduti
+Questa query elenca tutti i veicoli presenti in magazzino, evidenziando quali di essi non sono ancora stati venduti (i campi della vendita saranno NULL per i veicoli non venduti).
+
+-- Obiettivo: Visualizzare l'intero parco veicoli, evidenziando quelli non ancora venduti,
+-- per identificare possibili stock da promuovere o analizzare l'efficienza di vendita.
+SELECT 
+    veicoli.veicolo_ID,
+    veicoli.anno_immatricolazione,
+    veicoli.prezzo_acquisto,
+    -- Dettagli sul modello e marca per contestualizzare il veicolo
+    modelli.modello,
+    marche.marca,
+    -- Informazioni della vendita, se presenti
+    vendite.vendita_ID,
+    vendite.data_vendita,
+    vendite.prezzo_vendita
+FROM veicoli
+-- LEFT JOIN per includere tutti i veicoli, anche quelli che non hanno una vendita registrata
+LEFT JOIN vendite ON veicoli.veicolo_ID = vendite.veicolo_ID
+-- Unisce i veicoli con i modelli per ottenere dettagli specifici
+INNER JOIN modelli ON veicoli.modello_ID = modelli.modello_ID
+-- Unisce i modelli con le marche per identificare il brand
+INNER JOIN marche ON modelli.marca_ID = marche.marca_ID;
+La LEFT JOIN permette di individuare facilmente quali veicoli non hanno ancora un record di vendita, utile per interventi di marketing o gestione dello stock.
+
+3. RIGHT JOIN: Verifica dei clienti inattivi
+Questa query serve per elencare tutti i clienti registrati, includendo anche quelli che non hanno effettuato alcun acquisto. In questo modo è possibile individuare i clienti potenzialmente inattivi per future campagne di fidelizzazione.
+
+
+-- Obiettivo: Ottenere l'elenco completo dei clienti, evidenziando quelli che non hanno ancora acquistato,
+-- per pianificare azioni mirate di marketing e fidelizzazione.
+SELECT 
+    clienti.cliente_ID,
+    clienti.nome,
+    clienti.cognome,
+    -- Informazioni della vendita, se esistono: NULL indica il cliente non ha ancora effettuato acquisti
+    vendite.vendita_ID,
+    vendite.data_vendita,
+    vendite.prezzo_vendita
+FROM vendite
+-- RIGHT JOIN per mostrare tutti i clienti, anche quelli senza corrispondenza in vendite
+RIGHT JOIN clienti ON vendite.cliente_ID = clienti.cliente_ID;
+Con la RIGHT JOIN, si possono individuare rapidamente i clienti che non hanno ancora effettuato acquisti, permettendo di indirizzare campagne promozionali o di riattivazione.
