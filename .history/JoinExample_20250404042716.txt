@@ -7,7 +7,9 @@ Facilita l'analisi e la reportistica: Avere una vista completa dei dati in un un
 1. INNER JOIN: Analisi delle vendite complete
 Questa query è pensata per ottenere una panoramica completa delle vendite, includendo solo quei record per cui sono presenti tutte le informazioni necessarie (veicolo, modello, marca, cliente e venditore).
 
-
+sql
+Copia
+Modifica
 -- Obiettivo: Analizzare le vendite registrate dove tutte le informazioni correlate sono presenti,
 -- per avere dati affidabili su performance, prodotti e profili dei clienti e venditori.
 SELECT 
@@ -44,7 +46,9 @@ Utilizziamo l'INNER JOIN per includere solo le vendite in cui tutte le informazi
 2. LEFT JOIN: Identificazione dei veicoli non ancora venduti
 Questa query elenca tutti i veicoli presenti in magazzino, evidenziando quali di essi non sono ancora stati venduti (i campi della vendita saranno NULL per i veicoli non venduti).
 
-
+sql
+Copia
+Modifica
 -- Obiettivo: Visualizzare l'intero parco veicoli, evidenziando quelli non ancora venduti,
 -- per identificare possibili stock da promuovere o analizzare l'efficienza di vendita.
 SELECT 
@@ -70,7 +74,9 @@ La LEFT JOIN permette di individuare facilmente quali veicoli non hanno ancora u
 3. RIGHT JOIN: Verifica dei clienti inattivi
 Questa query serve per elencare tutti i clienti registrati, includendo anche quelli che non hanno effettuato alcun acquisto. In questo modo è possibile individuare i clienti potenzialmente inattivi per future campagne di fidelizzazione.
 
-
+sql
+Copia
+Modifica
 -- Obiettivo: Ottenere l'elenco completo dei clienti, evidenziando quelli che non hanno ancora acquistato,
 -- per pianificare azioni mirate di marketing e fidelizzazione.
 SELECT 
